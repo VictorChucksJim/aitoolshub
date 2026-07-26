@@ -1,1 +1,516 @@
-home page 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Tools Directory — Catalog of AI Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2A4A;
+    --navy-deep:#131f38;
+    --parchment:#FAF9F5;
+    --panel:#FFFFFF;
+    --graphite:#33363D;
+    --muted:#6b6f78;
+    --brass:#C9962F;
+    --brass-deep:#a67a22;
+    --sage:#5B8266;
+    --sage-bg:#E7F0E9;
+    --clay:#C4634A;
+    --clay-bg:#F7E7E1;
+    --amber-bg:#FBF1DA;
+    --line:#E4E0D6;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--graphite);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+
+  /* ---------- Top bar ---------- */
+  header.top{
+    background:linear-gradient(180deg,var(--navy) 0%, var(--navy-deep) 100%);
+    color:#fff;
+    padding:34px 28px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.top::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 64px);
+    pointer-events:none;
+  }
+  .top-inner{max-width:1280px; margin:0 auto; position:relative;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.18em;
+    color:var(--brass);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  h1.title{
+    font-family:'Fraunces',serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(28px,4vw,44px);
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{
+    color:#c9d0e0;
+    font-size:15px;
+    max-width:640px;
+    line-height:1.5;
+    margin:0 0 22px;
+  }
+  .stat-row{display:flex; gap:26px; flex-wrap:wrap; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#c9d0e0;}
+  .stat-row b{color:var(--brass); font-size:16px; display:block; font-family:'Fraunces',serif; font-weight:600;}
+
+  .search-wrap{max-width:1280px; margin:22px auto 0; position:relative;}
+  input#search{
+    width:100%;
+    padding:15px 18px 15px 46px;
+    font-size:15px;
+    font-family:'Inter',sans-serif;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+    outline:none;
+  }
+  input#search::placeholder{color:#a9b1c6;}
+  input#search:focus{border-color:var(--brass); background:rgba(255,255,255,0.13);}
+  .search-icon{
+    position:absolute; left:18px; top:50%; transform:translateY(-50%);
+    width:18px; height:18px; opacity:.75;
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{
+    max-width:1280px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:250px 1fr;
+    gap:28px;
+    padding:28px;
+  }
+  @media (max-width:880px){
+    .layout{grid-template-columns:1fr; padding:18px;}
+  }
+
+  /* ---------- Sidebar: catalog tabs ---------- */
+  aside.catalog{
+    align-self:start;
+    position:sticky;
+    top:18px;
+  }
+  .drawer{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+  .drawer-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    padding:12px 14px 8px;
+    border-bottom:1px dashed var(--line);
+  }
+  .tab-list{list-style:none; margin:0; padding:6px;}
+  .tab-list li{margin:0;}
+  .tab-btn{
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    padding:8px 10px;
+    border-radius:7px;
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    color:var(--graphite);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    transition:background .12s ease;
+  }
+  .tab-btn:hover{background:var(--amber-bg);}
+  .tab-btn.active{background:var(--navy); color:#fff;}
+  .tab-btn .dot{width:8px; height:8px; border-radius:50%; flex:none; margin-right:8px;}
+  .tab-btn .name{flex:1; display:flex; align-items:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .tab-btn .count{font-family:'IBM Plex Mono',monospace; font-size:11px; opacity:.65;}
+
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px; padding:10px;}
+  .chip{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:#fff;
+    cursor:pointer;
+    color:var(--graphite);
+  }
+  .chip.active{background:var(--brass); border-color:var(--brass); color:#fff;}
+
+  select#industry-select{
+    width:100%;
+    margin:8px 10px 12px;
+    padding:9px 10px;
+    border-radius:7px;
+    border:1px solid var(--line);
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    background:#fff;
+    width:calc(100% - 20px);
+  }
+
+  button#reset-btn{
+    width:calc(100% - 20px);
+    margin:2px 10px 12px;
+    padding:9px 10px;
+    border-radius:7px;
+    border:1px dashed var(--muted);
+    background:none;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.06em;
+    color:var(--muted);
+    cursor:pointer;
+    text-transform:uppercase;
+  }
+  button#reset-btn:hover{border-color:var(--clay); color:var(--clay);}
+
+  /* ---------- Results ---------- */
+  .results-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:14px; flex-wrap:wrap; gap:8px;
+  }
+  .results-count{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .results-count b{color:var(--navy);}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(290px,1fr));
+    gap:16px;
+  }
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 18px 16px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    transition:box-shadow .15s ease, transform .15s ease;
+  }
+  .card:hover{box-shadow:0 8px 24px rgba(27,42,74,0.09); transform:translateY(-2px);}
+  .card::before{
+    content:"";
+    position:absolute; top:14px; left:-1px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--parchment);
+    border:1px solid var(--line);
+  }
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .catalog-no{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--muted);
+    letter-spacing:.06em;
+  }
+  .card h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:18px;
+    margin:2px 0 0;
+    color:var(--navy);
+    line-height:1.25;
+  }
+  .tag-row{display:flex; flex-wrap:wrap; gap:6px; margin-top:2px;}
+  .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.03em;
+    padding:4px 8px;
+    border-radius:5px;
+    white-space:nowrap;
+  }
+  .tag.category{color:#fff;}
+  .tag.industry{background:#EFEDE4; color:var(--graphite);}
+  .pricing-pill{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    padding:4px 9px;
+    border-radius:999px;
+    font-weight:600;
+  }
+  .pricing-free{background:var(--sage-bg); color:var(--sage);}
+  .pricing-freemium{background:var(--amber-bg); color:var(--brass-deep);}
+  .pricing-paid{background:var(--clay-bg); color:var(--clay);}
+
+  .desc{font-size:13.5px; line-height:1.5; color:var(--graphite); margin:0;}
+  .feature{
+    font-size:12.5px; line-height:1.45; color:var(--muted); margin:0;
+    border-left:2px solid var(--brass); padding-left:9px;
+  }
+  .card-foot{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:auto; padding-top:10px; border-top:1px dashed var(--line);
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);
+  }
+  .card-foot .platform{max-width:60%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .visit-link{
+    color:var(--navy); text-decoration:none; font-weight:600;
+    display:inline-flex; align-items:center; gap:4px;
+  }
+  .visit-link:hover{color:var(--brass-deep);}
+
+  .empty-state{
+    text-align:center; padding:70px 20px; color:var(--muted);
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+  }
+  .empty-state .big{font-family:'Fraunces',serif; font-size:22px; color:var(--navy); display:block; margin-bottom:8px;}
+
+  footer{
+    text-align:center; padding:30px 20px 50px;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);
+  }
+
+  /* mobile filter bar */
+  @media (max-width:880px){
+    aside.catalog{position:static;}
+    .drawer{margin-bottom:12px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="eyebrow">Field Catalog — Est. 2026</div>
+    <h1 class="title">AI Tools Directory</h1>
+    <p class="subtitle">A hand-curated index of the AI tools actually worth knowing about — browse by category, industry, or pricing, or search the shelf directly.</p>
+    <div class="stat-row">
+      <div><b id="stat-total">0</b>tools catalogued</div>
+      <div><b id="stat-cats">0</b>function categories</div>
+      <div><b id="stat-free">0</b>with a free tier</div>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="search" type="text" placeholder="Search by tool name, feature, or description…" autocomplete="off">
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="catalog">
+    <div class="drawer">
+      <div class="drawer-label">Function Category</div>
+      <ul class="tab-list" id="category-list"></ul>
+    </div>
+    <div class="drawer">
+      <div class="drawer-label">Industry Tag</div>
+      <select id="industry-select">
+        <option value="">All industries</option>
+      </select>
+    </div>
+    <div class="drawer">
+      <div class="drawer-label">Pricing</div>
+      <div class="chip-row" id="pricing-chips"></div>
+    </div>
+    <div class="drawer">
+      <div class="drawer-label">Free Tier</div>
+      <div class="chip-row" id="freetier-chips"></div>
+      <button id="reset-btn">Reset all filters</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="results-head">
+      <div class="results-count"><b id="count-num">0</b> tools shown</div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="empty-state" id="empty" style="display:none;">
+      <span class="big">No matches on the shelf</span>
+      Try a broader search term or clear a filter.
+    </div>
+  </main>
+</div>
+
+<footer>AI TOOLS DIRECTORY · A living catalog — edit the data file to add, remove, or update entries.</footer>
+
+<script>
+const DATA = [{"name": "ChatGPT", "category": "AI Chatbots & Assistants", "industry": "General / Personal", "description": "Versatile general-purpose AI assistant for chat, writing, coding and image generation", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android, Desktop", "website": "chatgpt.com", "feature": "Best all-rounder with memory and voice mode"}, {"name": "Claude", "category": "AI Chatbots & Assistants", "industry": "Writing & Research", "description": "Anthropic's assistant known for careful reasoning, long context and coding strength", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android, Desktop", "website": "claude.ai", "feature": "Best for long-form writing, nuanced reasoning and Claude Code"}, {"name": "Gemini", "category": "AI Chatbots & Assistants", "industry": "General / Personal", "description": "Google's assistant deeply integrated across Search, Gmail, Docs and Android", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "gemini.google.com", "feature": "Native integration across the entire Google ecosystem"}, {"name": "Microsoft Copilot", "category": "AI Chatbots & Assistants", "industry": "Business / Ops", "description": "AI assistant embedded across Windows, Edge and Microsoft 365 apps", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Windows, iOS, Android", "website": "copilot.microsoft.com", "feature": "Deep Office/Microsoft 365 workflow integration"}, {"name": "Perplexity", "category": "Research & Search", "industry": "Research / Academia", "description": "AI answer engine that cites real-time sources for every response", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "perplexity.ai", "feature": "Every answer is source-cited for fact-checking"}, {"name": "Perplexity Comet", "category": "Research & Search", "industry": "Research / Academia", "description": "AI-native web browser built around agentic search and task execution", "pricing": "Freemium", "freeTier": "Yes", "platform": "Desktop (Mac, Windows)", "website": "perplexity.ai/comet", "feature": "Browses and completes tasks autonomously"}, {"name": "Grok", "category": "AI Chatbots & Assistants", "industry": "General / Personal", "description": "xAI's assistant integrated into X, with real-time trend awareness", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "grok.com", "feature": "Real-time access to X/Twitter conversation data"}, {"name": "Meta AI", "category": "AI Chatbots & Assistants", "industry": "General / Personal", "description": "Meta's assistant built into WhatsApp, Instagram and Facebook", "pricing": "Free", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "meta.ai", "feature": "Native to WhatsApp, Instagram and Messenger"}, {"name": "DeepSeek", "category": "AI Chatbots & Assistants", "industry": "Development / Engineering", "description": "Open-weight Chinese reasoning model family, strong at coding and math", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, API", "website": "deepseek.com", "feature": "Open-weight model with strong reasoning-per-dollar"}, {"name": "Mistral Le Chat", "category": "AI Chatbots & Assistants", "industry": "Development / Engineering", "description": "European assistant from Mistral AI, built on open-weight models", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "chat.mistral.ai", "feature": "EU-based with strong open-source model lineage"}, {"name": "Poe", "category": "AI Chatbots & Assistants", "industry": "General / Personal", "description": "Quora's platform aggregating many AI models in one chat interface", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "poe.com", "feature": "One subscription, access to dozens of models"}, {"name": "Jasper", "category": "Writing & Content", "industry": "Marketing", "description": "AI content platform for on-brand marketing copy at scale", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "jasper.ai", "feature": "Brand voice and campaign-level content workflows"}, {"name": "Copy.ai", "category": "Writing & Content", "industry": "Marketing", "description": "AI copywriting and go-to-market workflow automation platform", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "copy.ai", "feature": "Prebuilt workflows for sales and marketing copy"}, {"name": "Writesonic", "category": "Writing & Content", "industry": "Marketing", "description": "AI writer for blog posts, ads and SEO-optimized articles", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "writesonic.com", "feature": "Built-in SEO scoring while you write"}, {"name": "Grammarly", "category": "Writing & Content", "industry": "General / Personal", "description": "AI writing assistant for grammar, tone and clarity across the web", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop, Browser Ext.", "website": "grammarly.com", "feature": "Works inline across virtually any app or site"}, {"name": "Sudowrite", "category": "Writing & Content", "industry": "Media / Entertainment", "description": "AI writing partner purpose-built for fiction and creative writing", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "sudowrite.com", "feature": "Story-bible aware fiction generation"}, {"name": "Rytr", "category": "Writing & Content", "industry": "Marketing", "description": "Budget-friendly AI writer for short-form marketing content", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "rytr.me", "feature": "Very low-cost entry point for short copy"}, {"name": "QuillBot", "category": "Writing & Content", "industry": "Education", "description": "AI paraphrasing, grammar and summarizing tool for students and writers", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Browser Ext.", "website": "quillbot.com", "feature": "Best-in-class paraphrasing modes"}, {"name": "Wordtune", "category": "Writing & Content", "industry": "General / Personal", "description": "AI rewriting tool that suggests tone and clarity improvements inline", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Browser Ext.", "website": "wordtune.com", "feature": "One-click tone and length rewrites"}, {"name": "Hemingway Editor", "category": "Writing & Content", "industry": "General / Personal", "description": "Readability-focused editor that flags complex, hard-to-read sentences", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop", "website": "hemingwayapp.com", "feature": "Visual readability grading as you write"}, {"name": "Notion AI", "category": "Productivity & Automation", "industry": "Business / Ops", "description": "AI writing and Q&A assistant built directly into Notion workspaces", "pricing": "Paid", "freeTier": "No", "platform": "Web, Desktop, iOS, Android", "website": "notion.so", "feature": "Answers questions using your own workspace content"}, {"name": "ProWritingAid", "category": "Writing & Content", "industry": "Media / Entertainment", "description": "In-depth grammar and style editor with detailed writing reports", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop, Browser Ext.", "website": "prowritingaid.com", "feature": "Deep style reports beyond basic grammar checks"}, {"name": "Simplified", "category": "Writing & Content", "industry": "Marketing", "description": "All-in-one AI content, design and social media creation suite", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "simplified.com", "feature": "Combines copywriting with design in one app"}, {"name": "Midjourney", "category": "Image Generation", "industry": "Design / Creative", "description": "Leading AI art generator known for striking, artistic image quality", "pricing": "Paid", "freeTier": "No", "platform": "Discord, Web", "website": "midjourney.com", "feature": "Best-in-class artistic and stylistic image quality"}, {"name": "DALL-E 3", "category": "Image Generation", "industry": "Design / Creative", "description": "OpenAI's image generator, accessible directly inside ChatGPT", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web (via ChatGPT), API", "website": "openai.com/dall-e-3", "feature": "Fast, accurate prompt-to-image iteration"}, {"name": "Stable Diffusion", "category": "Image Generation", "industry": "Development / Engineering", "description": "Open-source image model that can be run and fine-tuned locally", "pricing": "Free", "freeTier": "Yes", "platform": "Local, Web, API", "website": "stability.ai", "feature": "Free, open-source and fully self-hostable"}, {"name": "Adobe Firefly", "category": "Image Generation", "industry": "Design / Creative", "description": "Adobe's commercially-safe generative image and design model", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, integrated in Creative Cloud", "website": "firefly.adobe.com", "feature": "Trained for commercial-safe licensing"}, {"name": "Ideogram", "category": "Image Generation", "industry": "Design / Creative", "description": "AI image generator known for accurate in-image text rendering", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "ideogram.ai", "feature": "Most reliable AI tool for legible text in images"}, {"name": "Flux", "category": "Image Generation", "industry": "Development / Engineering", "description": "Open-weight image model praised for prompt adherence and realism", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Local, API", "website": "blackforestlabs.ai", "feature": "Strong prompt adherence with an open-source variant"}, {"name": "Leonardo AI", "category": "Image Generation", "industry": "Design / Creative", "description": "AI image suite with fine-tuned models for game and product art", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "leonardo.ai", "feature": "Custom model training for consistent art styles"}, {"name": "Playground AI", "category": "Image Generation", "industry": "Design / Creative", "description": "User-friendly AI image editor with canvas-based generation", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "playground.com", "feature": "Intuitive canvas for iterative image editing"}, {"name": "Recraft", "category": "Image Generation", "industry": "Design / Creative", "description": "AI design tool generating vector graphics, icons and mockups", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "recraft.ai", "feature": "Generates true editable vector graphics"}, {"name": "Freepik AI Suite", "category": "Image Generation", "industry": "Design / Creative", "description": "AI image and design tools built into the Freepik asset library", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "freepik.com", "feature": "Combines generation with a huge stock asset library"}, {"name": "NightCafe", "category": "Image Generation", "industry": "Design / Creative", "description": "Community-driven AI art generator with multiple model options", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "nightcafe.studio", "feature": "Active creator community and daily art challenges"}, {"name": "Canva Magic Media", "category": "Image Generation", "industry": "Design / Creative", "description": "AI image and design generation built into the Canva editor", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android, Desktop", "website": "canva.com", "feature": "Generation combined directly with drag-and-drop design"}, {"name": "Sora", "category": "Video Generation", "industry": "Media / Entertainment", "description": "OpenAI's text-to-video model for short cinematic clips", "pricing": "Paid", "freeTier": "No", "platform": "Web (via ChatGPT)", "website": "openai.com/sora", "feature": "High-fidelity, coherent short-form video generation"}, {"name": "Veo 3.1", "category": "Video Generation", "industry": "Media / Entertainment", "description": "Google's advanced text-to-video model with native audio generation", "pricing": "Paid", "freeTier": "No", "platform": "Web (via Gemini, Flow)", "website": "deepmind.google/veo", "feature": "Generates synced audio alongside video"}, {"name": "Runway Gen-4", "category": "Video Generation", "industry": "Media / Entertainment", "description": "Professional AI video generation and editing toolkit", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "runwayml.com", "feature": "Strong control over camera motion and consistency"}, {"name": "Pika", "category": "Video Generation", "industry": "Media / Entertainment", "description": "AI video generator known for fast, playful short-clip creation", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "pika.art", "feature": "Fast turnaround for social-ready short clips"}, {"name": "Luma Dream Machine", "category": "Video Generation", "industry": "Media / Entertainment", "description": "AI video generator producing realistic motion from text or images", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "lumalabs.ai", "feature": "Realistic physics and camera motion"}, {"name": "HeyGen", "category": "Video Generation", "industry": "Marketing", "description": "AI avatar video generator for training, marketing and localization", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "heygen.com", "feature": "Multilingual AI avatars with lip-sync translation"}, {"name": "Synthesia", "category": "Video Generation", "industry": "Business / Ops", "description": "AI avatar video platform built for corporate training content", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "synthesia.io", "feature": "Enterprise-grade avatar training video pipelines"}, {"name": "Kling AI", "category": "Video Generation", "industry": "Media / Entertainment", "description": "Chinese-developed AI video generator known for realistic motion", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "klingai.com", "feature": "Strong long-duration, high-motion video quality"}, {"name": "Hailuo AI (MiniMax)", "category": "Video Generation", "industry": "Media / Entertainment", "description": "AI video generator with strong character consistency", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "hailuoai.video", "feature": "Consistent characters across multiple shots"}, {"name": "Google Vids", "category": "Video Generation", "industry": "Business / Ops", "description": "AI-assisted video creation tool inside Google Workspace", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "workspace.google.com/products/vids", "feature": "Scripted video creation tied to Workspace docs"}, {"name": "Descript", "category": "Video Editing", "industry": "Media / Entertainment", "description": "Edit video and podcasts by editing a text transcript", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop", "website": "descript.com", "feature": "Edit video by deleting words in a transcript"}, {"name": "CapCut", "category": "Video Editing", "industry": "Media / Entertainment", "description": "Free, popular AI-powered short-form video editor", "pricing": "Freemium", "freeTier": "Yes", "platform": "Mobile, Desktop, Web", "website": "capcut.com", "feature": "Free templates optimized for social platforms"}, {"name": "Opus Clip", "category": "Video Editing", "industry": "Marketing", "description": "AI tool that turns long videos into short viral clips automatically", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "opus.pro", "feature": "Auto-detects the most 'viral' moments in long videos"}, {"name": "Wondershare Filmora", "category": "Video Editing", "industry": "Media / Entertainment", "description": "Consumer video editor with AI-assisted effects and captions", "pricing": "Freemium", "freeTier": "Yes", "platform": "Desktop, Mobile", "website": "filmora.wondershare.com", "feature": "Approachable AI effects for beginner editors"}, {"name": "Kapwing", "category": "Video Editing", "industry": "Marketing", "description": "Browser-based collaborative video editor with AI subtitle tools", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "kapwing.com", "feature": "Real-time collaborative editing in-browser"}, {"name": "Suno", "category": "Audio & Music", "industry": "Media / Entertainment", "description": "AI music generator that creates full songs from text prompts", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "suno.com", "feature": "Generates full songs with vocals from a prompt"}, {"name": "Udio", "category": "Audio & Music", "industry": "Media / Entertainment", "description": "AI music generation platform for high-fidelity original songs", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "udio.com", "feature": "High audio fidelity and genre versatility"}, {"name": "ElevenLabs", "category": "Voice & Speech", "industry": "Development / Engineering", "description": "Leading AI voice generator for realistic text-to-speech and dubbing", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, API", "website": "elevenlabs.io", "feature": "Most realistic voice cloning and multilingual dubbing"}, {"name": "AIVA", "category": "Audio & Music", "industry": "Media / Entertainment", "description": "AI composer for original instrumental and orchestral scores", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop", "website": "aiva.ai", "feature": "Composes full orchestral scores for media"}, {"name": "Soundraw", "category": "Audio & Music", "industry": "Marketing", "description": "Royalty-free AI music generator for content creators", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "soundraw.io", "feature": "Fully royalty-free tracks for commercial use"}, {"name": "Mubert", "category": "Audio & Music", "industry": "Marketing", "description": "Generative background music API and app for creators", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, API", "website": "mubert.com", "feature": "API-first for embedding generative music"}, {"name": "LANDR", "category": "Audio & Music", "industry": "Media / Entertainment", "description": "AI mastering platform for musicians releasing tracks", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "landr.com", "feature": "Instant AI-powered audio mastering"}, {"name": "Murf AI", "category": "Voice & Speech", "industry": "Marketing", "description": "AI voiceover generator for presentations, ads and e-learning", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "murf.ai", "feature": "Studio-quality voiceovers with an intuitive editor"}, {"name": "Play.ht", "category": "Voice & Speech", "industry": "Development / Engineering", "description": "Text-to-speech API and app with ultra-realistic AI voices", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, API", "website": "play.ht", "feature": "Low-latency conversational voice API"}, {"name": "Otter.ai", "category": "Meetings & Transcription", "industry": "Business / Ops", "description": "AI meeting assistant that transcribes and summarizes conversations", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "otter.ai", "feature": "Live transcription with automated meeting summaries"}, {"name": "GitHub Copilot", "category": "Coding & Development", "industry": "Development / Engineering", "description": "AI pair programmer that autocompletes and suggests code in-editor", "pricing": "Freemium", "freeTier": "Yes", "platform": "VS Code, JetBrains, more", "website": "github.com/features/copilot", "feature": "Deep GitHub and Microsoft ecosystem integration"}, {"name": "Claude Code", "category": "Coding & Development", "industry": "Development / Engineering", "description": "Terminal-based agentic coding tool for large, complex codebases", "pricing": "Paid", "freeTier": "Limited", "platform": "CLI, Desktop, Mobile", "website": "claude.com/claude-code", "feature": "Top-ranked benchmark performance on large codebases"}, {"name": "Cursor", "category": "Coding & Development", "industry": "Development / Engineering", "description": "AI-native code editor built for fast, in-context pair programming", "pricing": "Freemium", "freeTier": "Yes", "platform": "Desktop (Mac, Windows, Linux)", "website": "cursor.com", "feature": "Best all-round AI-native IDE for daily coding"}, {"name": "Replit Agent", "category": "Coding & Development", "industry": "Development / Engineering", "description": "AI agent that builds and deploys full apps from natural language", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "replit.com", "feature": "Builds and hosts a working app end-to-end"}, {"name": "Windsurf (Codeium)", "category": "Coding & Development", "industry": "Development / Engineering", "description": "AI-native IDE with agentic 'flows' for multi-file coding tasks", "pricing": "Freemium", "freeTier": "Yes", "platform": "Desktop", "website": "windsurf.com", "feature": "Agentic multi-file 'flow' editing mode"}, {"name": "Tabnine", "category": "Coding & Development", "industry": "Development / Engineering", "description": "Privacy-focused AI code completion tool for enterprise teams", "pricing": "Freemium", "freeTier": "Yes", "platform": "VS Code, JetBrains, more", "website": "tabnine.com", "feature": "Strong on-premises / private-code compliance"}, {"name": "Amazon Q Developer", "category": "Coding & Development", "industry": "Development / Engineering", "description": "AWS's AI coding assistant tuned for cloud-native development", "pricing": "Freemium", "freeTier": "Yes", "platform": "IDE plugins, CLI", "website": "aws.amazon.com/q/developer", "feature": "Deep native integration with AWS services"}, {"name": "v0 by Vercel", "category": "Coding & Development", "industry": "Development / Engineering", "description": "AI tool that generates React UI components from text prompts", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "v0.dev", "feature": "Generates production-ready React/Tailwind UI"}, {"name": "Bolt.new", "category": "No-Code / App Builders", "industry": "Development / Engineering", "description": "AI tool that builds and deploys full-stack web apps in the browser", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "bolt.new", "feature": "Full-stack app scaffolding entirely in-browser"}, {"name": "Lovable", "category": "No-Code / App Builders", "industry": "Development / Engineering", "description": "AI app builder that turns prompts into working web applications", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "lovable.dev", "feature": "Fast prompt-to-deployed-app pipeline for non-coders"}, {"name": "Sourcegraph Cody", "category": "Coding & Development", "industry": "Development / Engineering", "description": "AI coding assistant with deep codebase-wide context awareness", "pricing": "Freemium", "freeTier": "Yes", "platform": "VS Code, JetBrains", "website": "sourcegraph.com/cody", "feature": "Codebase-wide context for large monorepos"}, {"name": "JetBrains AI Assistant", "category": "Coding & Development", "industry": "Development / Engineering", "description": "Native AI coding assistant built into JetBrains IDEs", "pricing": "Paid", "freeTier": "Limited", "platform": "JetBrains IDEs", "website": "jetbrains.com/ai", "feature": "Deep native integration across all JetBrains IDEs"}, {"name": "Motion", "category": "Productivity & Automation", "industry": "Business / Ops", "description": "AI calendar and project manager that auto-schedules your day", "pricing": "Paid", "freeTier": "No", "platform": "Web, Desktop, iOS, Android", "website": "usemotion.com", "feature": "Auto-builds your daily schedule around deadlines"}, {"name": "Reclaim AI", "category": "Productivity & Automation", "industry": "Business / Ops", "description": "AI scheduling assistant that protects time for habits and tasks", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Google Calendar", "website": "reclaim.ai", "feature": "Smart, flexible habit and task time-blocking"}, {"name": "Zapier AI", "category": "Productivity & Automation", "industry": "Business / Ops", "description": "No-code automation platform with AI-powered workflow building", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "zapier.com", "feature": "Largest library of app-to-app integrations"}, {"name": "Make.com", "category": "Productivity & Automation", "industry": "Development / Engineering", "description": "Visual no-code automation builder for complex multi-step workflows", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "make.com", "feature": "Visual, highly customizable workflow canvas"}, {"name": "n8n", "category": "Productivity & Automation", "industry": "Development / Engineering", "description": "Open-source, self-hostable workflow automation platform with AI agents", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Self-hosted", "website": "n8n.io", "feature": "Self-hostable and GDPR-friendly for EU teams"}, {"name": "Superhuman", "category": "Productivity & Automation", "industry": "Business / Ops", "description": "AI-powered email client built for speed and inbox triage", "pricing": "Paid", "freeTier": "No", "platform": "Web, Desktop, iOS, Android", "website": "superhuman.com", "feature": "AI triage and blazing-fast keyboard-driven workflow"}, {"name": "Todoist AI Assist", "category": "Productivity & Automation", "industry": "General / Personal", "description": "AI task suggestions and breakdowns inside the Todoist task manager", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop, iOS, Android", "website": "todoist.com", "feature": "Breaks big tasks into actionable sub-steps"}, {"name": "ClickUp AI", "category": "Productivity & Automation", "industry": "Business / Ops", "description": "AI writing, summarizing and task automation inside ClickUp", "pricing": "Paid", "freeTier": "No", "platform": "Web, Desktop, iOS, Android", "website": "clickup.com", "feature": "AI woven across docs, tasks and chat in one hub"}, {"name": "Asana AI", "category": "Productivity & Automation", "industry": "Business / Ops", "description": "AI project-status summaries and smart task assistance in Asana", "pricing": "Paid", "freeTier": "No", "platform": "Web, Desktop, iOS, Android", "website": "asana.com", "feature": "Auto-generated project status reports"}, {"name": "You.com", "category": "Research & Search", "industry": "Research / Academia", "description": "AI search engine combining chat, apps and cited web results", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "you.com", "feature": "Custom AI 'apps' alongside cited search results"}, {"name": "Elicit", "category": "Research & Search", "industry": "Research / Academia", "description": "AI research assistant that finds and summarizes academic papers", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "elicit.com", "feature": "Extracts structured data across research papers"}, {"name": "Consensus", "category": "Research & Search", "industry": "Research / Academia", "description": "AI search engine that answers questions using scientific papers", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "consensus.app", "feature": "Answers backed only by peer-reviewed research"}, {"name": "NotebookLM", "category": "Research & Search", "industry": "Research / Academia", "description": "Google's AI notebook that grounds answers in your uploaded sources", "pricing": "Free", "freeTier": "Yes", "platform": "Web", "website": "notebooklm.google", "feature": "Grounded answers with an audio-overview podcast feature"}, {"name": "Genspark", "category": "Research & Search", "industry": "Research / Academia", "description": "AI agent that generates 'Sparkpages' answering complex queries", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "genspark.ai", "feature": "Builds custom multi-source answer pages on the fly"}, {"name": "Julius AI", "category": "Data & Analytics", "industry": "Business / Ops", "description": "AI data analyst that analyzes spreadsheets and builds charts via chat", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "julius.ai", "feature": "Chat-driven spreadsheet analysis and visualization"}, {"name": "Power BI Copilot", "category": "Data & Analytics", "industry": "Business / Ops", "description": "AI assistant embedded in Microsoft Power BI for natural-language analytics", "pricing": "Paid", "freeTier": "No", "platform": "Web, Desktop", "website": "powerbi.microsoft.com", "feature": "Natural-language querying of enterprise BI dashboards"}, {"name": "Akkio", "category": "Data & Analytics", "industry": "Business / Ops", "description": "No-code AI platform for building predictive models from spreadsheets", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "akkio.com", "feature": "Predictive modeling without writing code"}, {"name": "MonkeyLearn", "category": "Data & Analytics", "industry": "Marketing", "description": "No-code text analytics platform for sentiment and topic tagging", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, API", "website": "monkeylearn.com", "feature": "Pre-trained text-classification models via no-code UI"}, {"name": "Canva", "category": "Design & Presentation", "industry": "Design / Creative", "description": "All-in-one design platform with AI image, text and video tools built in", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop, iOS, Android", "website": "canva.com", "feature": "Broadest all-in-one design toolkit for non-designers"}, {"name": "Gamma", "category": "Design & Presentation", "industry": "Business / Ops", "description": "AI tool that turns text prompts into polished slide decks and docs", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "gamma.app", "feature": "Prompt-to-deck generation in under a minute"}, {"name": "Beautiful.ai", "category": "Design & Presentation", "industry": "Business / Ops", "description": "AI presentation software with smart, self-adjusting slide templates", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "beautiful.ai", "feature": "Slides auto-adjust layout as you edit content"}, {"name": "Tome", "category": "Design & Presentation", "industry": "Marketing", "description": "AI-native storytelling and presentation generation tool", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "tome.app", "feature": "Generates full narrative decks from a single prompt"}, {"name": "Figma AI", "category": "Design & Presentation", "industry": "Design / Creative", "description": "AI features built into Figma for design generation and editing", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop", "website": "figma.com", "feature": "AI generation inside a professional design tool"}, {"name": "Adobe Express", "category": "Design & Presentation", "industry": "Marketing", "description": "Adobe's quick-design app with AI templates for social and marketing", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "adobe.com/express", "feature": "Fast, on-brand templates powered by Adobe Firefly"}, {"name": "Surfer SEO", "category": "Marketing & SEO", "industry": "Marketing", "description": "AI content optimization tool that scores pages against SEO competitors", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "surferseo.com", "feature": "Real-time SEO scoring against top-ranking pages"}, {"name": "Semrush AI", "category": "Marketing & SEO", "industry": "Marketing", "description": "AI-powered SEO, content and competitive research toolkit", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "semrush.com", "feature": "Combines AI content tools with deep SEO data"}, {"name": "AdCreative.ai", "category": "Marketing & SEO", "industry": "Marketing", "description": "AI generator for high-converting ad creatives and banners", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "adcreative.ai", "feature": "Predicts creative conversion scores before you spend"}, {"name": "Persado", "category": "Marketing & SEO", "industry": "Marketing", "description": "AI language platform that optimizes marketing copy for conversion", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "persado.com", "feature": "Enterprise-grade language testing for conversion lift"}, {"name": "HubSpot Breeze AI", "category": "Marketing & SEO", "industry": "Marketing", "description": "AI assistant built into HubSpot's CRM and marketing hub", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "hubspot.com", "feature": "AI woven across CRM, marketing and service hubs"}, {"name": "MarketMuse", "category": "Marketing & SEO", "industry": "Marketing", "description": "AI content planning tool for topic research and content gap analysis", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "marketmuse.com", "feature": "Deep topical authority and content-gap analysis"}, {"name": "Fireflies.ai", "category": "Meetings & Transcription", "industry": "Business / Ops", "description": "AI meeting recorder that transcribes and searches conversations", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, integrations", "website": "fireflies.ai", "feature": "Searchable transcript library across every meeting"}, {"name": "Fathom", "category": "Meetings & Transcription", "industry": "Sales", "description": "Free AI meeting recorder with instant summaries and CRM sync", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop", "website": "fathom.video", "feature": "Free tier with instant highlight reels"}, {"name": "Gong", "category": "Meetings & Transcription", "industry": "Sales", "description": "AI revenue intelligence platform analyzing sales call conversations", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "gong.io", "feature": "Deep sales-conversation analytics tied to deal outcomes"}, {"name": "tl;dv", "category": "Meetings & Transcription", "industry": "Business / Ops", "description": "AI meeting recorder with timestamped highlights and clips", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop", "website": "tldv.io", "feature": "One-click timestamped clip creation from calls"}, {"name": "Grain", "category": "Meetings & Transcription", "industry": "Sales", "description": "AI meeting recorder built for extracting shareable customer insights", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "grain.com", "feature": "Auto-tags key customer moments for easy sharing"}, {"name": "Microsoft Agent 365", "category": "AI Agents & Automation Platforms", "industry": "Business / Ops", "description": "Enterprise control plane for managing and governing AI agents", "pricing": "Paid", "freeTier": "No", "platform": "Web, Microsoft 365", "website": "microsoft.com/agent365", "feature": "Centralized governance layer for enterprise AI agents"}, {"name": "CrewAI", "category": "AI Agents & Automation Platforms", "industry": "Development / Engineering", "description": "Open-source framework for orchestrating multi-agent AI workflows", "pricing": "Freemium", "freeTier": "Yes", "platform": "Framework / API", "website": "crewai.com", "feature": "Role-based multi-agent orchestration framework"}, {"name": "LangChain", "category": "AI Agents & Automation Platforms", "industry": "Development / Engineering", "description": "Popular open-source framework for building LLM-powered applications", "pricing": "Free", "freeTier": "Yes", "platform": "Framework / API", "website": "langchain.com", "feature": "De facto standard framework for LLM app development"}, {"name": "Relevance AI", "category": "AI Agents & Automation Platforms", "industry": "Business / Ops", "description": "No-code platform for building and deploying custom AI agents", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "relevanceai.com", "feature": "No-code agent building for business teams"}, {"name": "Lindy", "category": "AI Agents & Automation Platforms", "industry": "Business / Ops", "description": "No-code AI agent builder for automating email, calendar and CRM tasks", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "lindy.ai", "feature": "Pre-built agent templates for common business tasks"}, {"name": "Gumloop", "category": "AI Agents & Automation Platforms", "industry": "Development / Engineering", "description": "Visual builder for AI-powered automation workflows and agents", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "gumloop.com", "feature": "Drag-and-drop canvas for AI workflow logic"}, {"name": "Claude Cowork", "category": "AI Agents & Automation Platforms", "industry": "Business / Ops", "description": "Agentic knowledge-work desktop app for non-developer teams", "pricing": "Paid", "freeTier": "Limited", "platform": "Desktop (Mac, Windows)", "website": "claude.com/cowork", "feature": "Delegates multi-step knowledge work to an AI agent team"}, {"name": "AutoGPT", "category": "AI Agents & Automation Platforms", "industry": "Development / Engineering", "description": "Early open-source experiment in autonomous, goal-driven AI agents", "pricing": "Free", "freeTier": "Yes", "platform": "Self-hosted", "website": "autogpt.net", "feature": "Pioneer of the autonomous-agent-loop concept"}, {"name": "Intercom Fin", "category": "Customer Support", "industry": "Customer Support", "description": "AI customer service agent that resolves support tickets autonomously", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "intercom.com/fin", "feature": "High autonomous resolution rate for support tickets"}, {"name": "Zendesk AI", "category": "Customer Support", "industry": "Customer Support", "description": "AI-powered ticket triage, summarization and reply drafting for support teams", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "zendesk.com", "feature": "AI woven throughout the full support ticket lifecycle"}, {"name": "Ada", "category": "Customer Support", "industry": "Customer Support", "description": "No-code AI customer service automation platform", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "ada.cx", "feature": "No-code AI agent builder purpose-built for CX"}, {"name": "Forethought", "category": "Customer Support", "industry": "Customer Support", "description": "AI platform automating triage, resolution and agent assistance", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "forethought.ai", "feature": "Predictive ticket routing and resolution suggestions"}, {"name": "Khanmigo", "category": "Education & Learning", "industry": "Education", "description": "Khan Academy's AI tutor guiding students through problems Socratically", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "khanacademy.org/khan-labs", "feature": "Socratic tutoring that guides rather than gives answers"}, {"name": "Duolingo Max", "category": "Education & Learning", "industry": "Education", "description": "AI-enhanced tier of Duolingo with explain-my-answer and roleplay", "pricing": "Paid", "freeTier": "No", "platform": "iOS, Android", "website": "duolingo.com", "feature": "Conversational roleplay practice with an AI partner"}, {"name": "Coursera Coach", "category": "Education & Learning", "industry": "Education", "description": "AI learning assistant embedded in Coursera courses", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "coursera.org", "feature": "Course-specific AI tutoring tied to real curricula"}, {"name": "Quizlet AI (Q-Chat)", "category": "Education & Learning", "industry": "Education", "description": "AI-powered study tools including adaptive flashcard tutoring", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "quizlet.com", "feature": "Adaptive AI tutor built around your own flashcard sets"}, {"name": "StudyFetch", "category": "Education & Learning", "industry": "Education", "description": "AI study platform that turns notes into flashcards, quizzes and tutoring", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "studyfetch.com", "feature": "Converts any uploaded material into a full study kit"}, {"name": "Photomath", "category": "Education & Learning", "industry": "Education", "description": "AI app that solves and explains math problems from a photo", "pricing": "Freemium", "freeTier": "Yes", "platform": "iOS, Android", "website": "photomath.com", "feature": "Step-by-step explanations from a single photo"}, {"name": "Speak", "category": "Education & Learning", "industry": "Education", "description": "AI-powered language learning app focused on real spoken conversation", "pricing": "Paid", "freeTier": "No", "platform": "iOS, Android", "website": "speak.com", "feature": "Realistic AI conversation partner for speaking practice"}, {"name": "HireVue", "category": "HR & Recruiting", "industry": "HR / Recruiting", "description": "AI-assisted video interviewing and candidate assessment platform", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "hirevue.com", "feature": "AI-scored structured video interviews at scale"}, {"name": "Eightfold AI", "category": "HR & Recruiting", "industry": "HR / Recruiting", "description": "AI talent intelligence platform for sourcing and internal mobility", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "eightfold.ai", "feature": "Deep talent-matching across an entire organization"}, {"name": "Paradox (Olivia)", "category": "HR & Recruiting", "industry": "HR / Recruiting", "description": "Conversational AI recruiting assistant for high-volume hiring", "pricing": "Paid", "freeTier": "No", "platform": "Web, SMS", "website": "paradox.ai", "feature": "Conversational scheduling for high-volume hiring"}, {"name": "Textio", "category": "HR & Recruiting", "industry": "HR / Recruiting", "description": "AI writing tool that improves job posts and performance feedback", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "textio.com", "feature": "Bias-aware language scoring for job postings"}, {"name": "Harvey AI", "category": "Legal", "industry": "Legal", "description": "AI legal assistant for contract analysis, research and drafting", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "harvey.ai", "feature": "Purpose-built for elite law firm workflows"}, {"name": "Casetext CoCounsel", "category": "Legal", "industry": "Legal", "description": "AI legal research assistant for document review and case research", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "casetext.com", "feature": "Grounded legal research with verifiable citations"}, {"name": "Spellbook", "category": "Legal", "industry": "Legal", "description": "AI contract drafting and review add-in for Microsoft Word", "pricing": "Paid", "freeTier": "No", "platform": "Microsoft Word add-in", "website": "spellbook.legal", "feature": "Contract redlining directly inside Word"}, {"name": "DoNotPay", "category": "Legal", "industry": "Legal", "description": "Consumer-facing AI 'robot lawyer' for disputes and paperwork", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "donotpay.com", "feature": "Automates everyday consumer legal paperwork"}, {"name": "Nuance DAX", "category": "Healthcare", "industry": "Healthcare", "description": "Ambient AI documentation tool that drafts clinical notes during visits", "pricing": "Paid", "freeTier": "No", "platform": "Mobile, integrated EHR", "website": "nuance.com/dax", "feature": "Ambient listening turns visits into clinical notes automatically"}, {"name": "Abridge", "category": "Healthcare", "industry": "Healthcare", "description": "AI medical scribe that converts patient conversations into structured notes", "pricing": "Paid", "freeTier": "No", "platform": "Mobile, integrated EHR", "website": "abridge.com", "feature": "Structured, coded notes generated from conversation"}, {"name": "Suki AI", "category": "Healthcare", "industry": "Healthcare", "description": "Voice-enabled AI assistant that automates clinical documentation", "pricing": "Paid", "freeTier": "No", "platform": "Mobile, integrated EHR", "website": "suki.ai", "feature": "Voice-first workflow designed around clinician speech"}, {"name": "Woebot", "category": "Healthcare", "industry": "Healthcare", "description": "AI mental health chatbot offering CBT-based support conversations", "pricing": "Freemium", "freeTier": "Yes", "platform": "iOS, Android", "website": "woebothealth.com", "feature": "CBT-based structured support conversations"}, {"name": "Vic.ai", "category": "Finance", "industry": "Finance", "description": "AI platform that automates invoice processing and approvals", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "vic.ai", "feature": "Autonomous invoice coding and approval routing"}, {"name": "Cleo", "category": "Finance", "industry": "Finance / Personal", "description": "AI personal finance chatbot for budgeting and spending insights", "pricing": "Freemium", "freeTier": "Yes", "platform": "iOS, Android", "website": "meetcleo.com", "feature": "Conversational, personality-driven budgeting coach"}, {"name": "Booke AI", "category": "Finance", "industry": "Finance", "description": "AI bookkeeping assistant that automates transaction categorization", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "booke.ai", "feature": "Automated categorization built for accounting firms"}, {"name": "Luma AI (Genie)", "category": "3D & Animation", "industry": "Design / Creative", "description": "AI tool that generates 3D models and scenes from text or images", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Mobile", "website": "lumalabs.ai/genie", "feature": "Fast text-to-3D asset generation for creators"}, {"name": "Meshy", "category": "3D & Animation", "industry": "Design / Creative", "description": "AI platform for generating and texturing 3D models for games", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "meshy.ai", "feature": "Auto-textures and rigs generated 3D meshes"}, {"name": "Kaiber", "category": "3D & Animation", "industry": "Media / Entertainment", "description": "AI animation tool that turns images and music into stylized video", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "kaiber.ai", "feature": "Music-reactive AI animation generation"}, {"name": "Spline AI", "category": "3D & Animation", "industry": "Design / Creative", "description": "AI-assisted 3D design tool for interactive web graphics", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "spline.design", "feature": "Interactive, web-embeddable 3D scenes"}, {"name": "Bubble AI", "category": "No-Code / App Builders", "industry": "Development / Engineering", "description": "No-code platform with AI assistance for building full web apps", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "bubble.io", "feature": "Mature no-code platform with AI app scaffolding"}, {"name": "Softr AI", "category": "No-Code / App Builders", "industry": "Development / Engineering", "description": "No-code tool for turning spreadsheets into AI-enhanced web apps", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "softr.io", "feature": "Turns Airtable/Google Sheets into client-ready apps"}, {"name": "Glide AI", "category": "No-Code / App Builders", "industry": "Development / Engineering", "description": "No-code mobile app builder with AI-generated components", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Mobile", "website": "glideapps.com", "feature": "Fastest path from spreadsheet to mobile app"}, {"name": "Shortwave", "category": "Email", "industry": "Business / Ops", "description": "AI-powered email client with smart summaries and scheduling", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "shortwave.com", "feature": "AI-generated bundle summaries of related threads"}, {"name": "Fyxer AI", "category": "Email", "industry": "Business / Ops", "description": "AI assistant that drafts replies and organizes inbox automatically", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Gmail/Outlook integration", "website": "fyxer.com", "feature": "Auto-drafts replies matched to your writing style"}, {"name": "SaneBox", "category": "Email", "industry": "General / Personal", "description": "AI email filter that prioritizes important messages automatically", "pricing": "Paid", "freeTier": "No", "platform": "Web, integrations", "website": "sanebox.com", "feature": "Learns and auto-sorts inbox priority over time"}, {"name": "DeepL", "category": "Translation", "industry": "General / Personal", "description": "AI translation tool widely regarded as more natural than competitors", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, Desktop, Browser Ext.", "website": "deepl.com", "feature": "Most natural-sounding machine translation output"}, {"name": "Reverso", "category": "Translation", "industry": "Education", "description": "AI translation and language-learning tool with contextual examples", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "reverso.net", "feature": "Contextual example sentences alongside translations"}, {"name": "Character.AI", "category": "AI Chatbots & Assistants", "industry": "Media / Entertainment", "description": "Platform for creating and chatting with custom AI personas", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "character.ai", "feature": "Huge library of user-created character personas"}, {"name": "Pi (Inflection AI)", "category": "AI Chatbots & Assistants", "industry": "General / Personal", "description": "Emotionally supportive personal AI assistant focused on conversation", "pricing": "Free", "freeTier": "Yes", "platform": "Web, iOS, Android", "website": "pi.ai", "feature": "Warm, supportive conversational tone by design"}, {"name": "Copilot Studio", "category": "AI Agents & Automation Platforms", "industry": "Business / Ops", "description": "Microsoft's low-code platform for building custom Copilot agents", "pricing": "Paid", "freeTier": "Limited", "platform": "Web", "website": "copilotstudio.microsoft.com", "feature": "Low-code custom agent builder inside Microsoft 365"}, {"name": "Einstein Copilot (Salesforce)", "category": "AI Agents & Automation Platforms", "industry": "Sales", "description": "Salesforce's AI assistant embedded across the CRM platform", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "salesforce.com/einstein", "feature": "Native AI actions across the entire Salesforce CRM"}, {"name": "Writer", "category": "Writing & Content", "industry": "Business / Ops", "description": "Enterprise generative AI platform with brand-governed writing tools", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "writer.com", "feature": "Enterprise brand and compliance guardrails built in"}, {"name": "Anyword", "category": "Marketing & SEO", "industry": "Marketing", "description": "AI copywriting platform with predictive performance scoring", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "anyword.com", "feature": "Predicts copy performance before you publish"}, {"name": "Synthflow", "category": "Voice & Speech", "industry": "Customer Support", "description": "No-code platform for building AI voice agents for phone calls", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "synthflow.ai", "feature": "No-code builder for outbound/inbound voice agents"}, {"name": "Vapi", "category": "Voice & Speech", "industry": "Development / Engineering", "description": "Developer platform and API for building voice AI agents", "pricing": "Freemium", "freeTier": "Yes", "platform": "API, Web", "website": "vapi.ai", "feature": "Developer-first API for production voice agents"}, {"name": "Krisp", "category": "Voice & Speech", "industry": "Business / Ops", "description": "AI app that removes background noise and echo from calls", "pricing": "Freemium", "freeTier": "Yes", "platform": "Desktop, Web", "website": "krisp.ai", "feature": "Real-time noise and echo cancellation on any call app"}, {"name": "Runway Act-One", "category": "Video Generation", "industry": "Media / Entertainment", "description": "AI tool that transfers human performance onto animated characters", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "runwayml.com", "feature": "Maps real actor performance onto generated characters"}, {"name": "Topaz Labs", "category": "Image Generation", "industry": "Media / Entertainment", "description": "AI upscaling and enhancement suite for photos and video", "pricing": "Paid", "freeTier": "No", "platform": "Desktop", "website": "topazlabs.com", "feature": "Industry-standard AI upscaling for photo and video"}, {"name": "Remove.bg", "category": "Image Generation", "industry": "Design / Creative", "description": "AI tool that automatically removes image backgrounds in one click", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, API", "website": "remove.bg", "feature": "One-click, near-instant background removal"}, {"name": "Clip Studio (AI tools)", "category": "Image Generation", "industry": "Design / Creative", "description": "Illustration software with AI-assisted coloring and line tools", "pricing": "Paid", "freeTier": "No", "platform": "Desktop, iPad", "website": "clipstudio.net", "feature": "AI assist tools built for professional illustrators"}, {"name": "Otter Pilot", "category": "Meetings & Transcription", "industry": "Business / Ops", "description": "Otter.ai's automated meeting-joining and note-taking bot", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, integrations", "website": "otter.ai", "feature": "Auto-joins calendar meetings to take notes"}, {"name": "Read AI", "category": "Meetings & Transcription", "industry": "Business / Ops", "description": "AI meeting and messaging assistant that scores engagement and sentiment", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, integrations", "website": "read.ai", "feature": "Sentiment and engagement scoring across meetings"}, {"name": "Wordware", "category": "AI Agents & Automation Platforms", "industry": "Development / Engineering", "description": "AI app-building platform using natural language as the programming layer", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web", "website": "wordware.ai", "feature": "Prompts function as executable app logic"}, {"name": "Perplexity Deep Research", "category": "Research & Search", "industry": "Research / Academia", "description": "Agentic research mode that autonomously browses and compiles reports", "pricing": "Paid", "freeTier": "Limited", "platform": "Web, iOS, Android", "website": "perplexity.ai", "feature": "Autonomously compiles multi-source research reports"}, {"name": "Manus", "category": "AI Agents & Automation Platforms", "industry": "Business / Ops", "description": "General-purpose autonomous AI agent for complex multi-step tasks", "pricing": "Paid", "freeTier": "Limited", "platform": "Web", "website": "manus.im", "feature": "Executes long, multi-step tasks with minimal supervision"}, {"name": "Devin (Cognition)", "category": "Coding & Development", "industry": "Development / Engineering", "description": "Autonomous AI software engineer that plans and ships code changes", "pricing": "Paid", "freeTier": "No", "platform": "Web", "website": "cognition.ai", "feature": "Operates as an independent, task-planning AI engineer"}, {"name": "Cline", "category": "Coding & Development", "industry": "Development / Engineering", "description": "Open-source autonomous coding agent that runs inside VS Code", "pricing": "Free", "freeTier": "Yes", "platform": "VS Code extension", "website": "cline.bot", "feature": "Free, open-source autonomous coding agent"}, {"name": "Warp", "category": "Coding & Development", "industry": "Development / Engineering", "description": "AI-powered terminal that suggests and explains command-line actions", "pricing": "Freemium", "freeTier": "Yes", "platform": "Desktop (Mac, Windows, Linux)", "website": "warp.dev", "feature": "AI command suggestions inside a modern terminal"}, {"name": "Postman AI (Postbot)", "category": "Coding & Development", "industry": "Development / Engineering", "description": "AI assistant inside Postman for API testing and debugging", "pricing": "Freemium", "freeTier": "Yes", "platform": "Desktop, Web", "website": "postman.com", "feature": "AI-generated API tests and debugging suggestions"}, {"name": "Vectara", "category": "Data & Analytics", "industry": "Development / Engineering", "description": "Developer platform for building grounded retrieval-augmented AI search", "pricing": "Freemium", "freeTier": "Yes", "platform": "API, Web", "website": "vectara.com", "feature": "Hallucination-checked retrieval-augmented search API"}, {"name": "Hugging Face", "category": "Coding & Development", "industry": "Development / Engineering", "description": "Open hub and tooling for hosting, sharing and running AI models", "pricing": "Freemium", "freeTier": "Yes", "platform": "Web, API", "website": "huggingface.co", "feature": "Largest open hub of models, datasets and demos"}, {"name": "Replicate", "category": "Coding & Development", "industry": "Development / Engineering", "description": "Platform for running and hosting open-source AI models via API", "pricing": "Freemium", "freeTier": "Yes", "platform": "API, Web", "website": "replicate.com", "feature": "Pay-per-second hosting for thousands of open models"}];
+
+const CATEGORY_COLORS = {};
+const PALETTE = ["#E76F51","#2A9D8F","#588157","#C9962F","#9B5DE5","#2EC4B6","#D46A9F","#6C757D",
+                  "#F4A261","#4361EE","#52B788","#E63946","#0E9AAE","#BC6C25","#B08900","#3A86FF"];
+
+function buildCategoryColors(cats){
+  cats.forEach((c,i)=>{ CATEGORY_COLORS[c] = PALETTE[i % PALETTE.length]; });
+}
+
+const state = { search:"", category:"", industry:"", pricing:"", freeTier:"" };
+
+function uniqueSorted(arr){ return [...new Set(arr)].sort(); }
+
+function init(){
+  const categories = uniqueSorted(DATA.map(d=>d.category));
+  const industries = uniqueSorted(DATA.map(d=>d.industry));
+  buildCategoryColors(categories);
+
+  document.getElementById('stat-total').textContent = DATA.length;
+  document.getElementById('stat-cats').textContent = categories.length;
+  document.getElementById('stat-free').textContent = DATA.filter(d=>d.freeTier==='Yes').length;
+
+  const catList = document.getElementById('category-list');
+  const allLi = document.createElement('li');
+  allLi.innerHTML = `<button class="tab-btn active" data-cat="">
+      <span class="name">All Categories</span><span class="count">${DATA.length}</span></button>`;
+  catList.appendChild(allLi);
+  categories.forEach(cat=>{
+    const count = DATA.filter(d=>d.category===cat).length;
+    const li = document.createElement('li');
+    li.innerHTML = `<button class="tab-btn" data-cat="${cat}">
+        <span class="name"><span class="dot" style="background:${CATEGORY_COLORS[cat]}"></span>${cat}</span>
+        <span class="count">${count}</span></button>`;
+    catList.appendChild(li);
+  });
+  catList.addEventListener('click', e=>{
+    const btn = e.target.closest('.tab-btn');
+    if(!btn) return;
+    state.category = btn.dataset.cat;
+    document.querySelectorAll('#category-list .tab-btn').forEach(b=>b.classList.toggle('active', b===btn));
+    render();
+  });
+
+  const industrySelect = document.getElementById('industry-select');
+  industries.forEach(ind=>{
+    const opt = document.createElement('option');
+    opt.value = ind; opt.textContent = ind;
+    industrySelect.appendChild(opt);
+  });
+  industrySelect.addEventListener('change', e=>{ state.industry = e.target.value; render(); });
+
+  const pricingChips = document.getElementById('pricing-chips');
+  ["Free","Freemium","Paid"].forEach(p=>{
+    const chip = document.createElement('button');
+    chip.className='chip'; chip.textContent=p; chip.dataset.val=p;
+    chip.addEventListener('click', ()=>{
+      state.pricing = state.pricing===p ? "" : p;
+      document.querySelectorAll('#pricing-chips .chip').forEach(c=>c.classList.toggle('active', c.dataset.val===state.pricing));
+      render();
+    });
+    pricingChips.appendChild(chip);
+  });
+
+  const freeChips = document.getElementById('freetier-chips');
+  ["Yes","No","Limited"].forEach(f=>{
+    const chip = document.createElement('button');
+    chip.className='chip'; chip.textContent=f; chip.dataset.val=f;
+    chip.addEventListener('click', ()=>{
+      state.freeTier = state.freeTier===f ? "" : f;
+      document.querySelectorAll('#freetier-chips .chip').forEach(c=>c.classList.toggle('active', c.dataset.val===state.freeTier));
+      render();
+    });
+    freeChips.appendChild(chip);
+  });
+
+  document.getElementById('search').addEventListener('input', e=>{
+    state.search = e.target.value.trim().toLowerCase();
+    render();
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', ()=>{
+    state.search=""; state.category=""; state.industry=""; state.pricing=""; state.freeTier="";
+    document.getElementById('search').value="";
+    document.getElementById('industry-select').value="";
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.cat===""));
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    render();
+  });
+
+  render();
+}
+
+function render(){
+  let items = DATA.filter(d=>{
+    if(state.category && d.category!==state.category) return false;
+    if(state.industry && d.industry!==state.industry) return false;
+    if(state.pricing && d.pricing!==state.pricing) return false;
+    if(state.freeTier && d.freeTier!==state.freeTier) return false;
+    if(state.search){
+      const hay = (d.name+" "+d.description+" "+d.feature+" "+d.category).toLowerCase();
+      if(!hay.includes(state.search)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('count-num').textContent = items.length;
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  grid.innerHTML = "";
+
+  if(items.length===0){
+    empty.style.display='block';
+  } else {
+    empty.style.display='none';
+    items.forEach((d,i)=>{
+      const catColor = CATEGORY_COLORS[d.category] || '#6C757D';
+      const pClass = 'pricing-'+d.pricing.toLowerCase();
+      const card = document.createElement('div');
+      card.className='card';
+      card.innerHTML = `
+        <div class="card-top">
+          <div>
+            <div class="catalog-no">No. ${String(i+1).padStart(3,'0')}</div>
+            <h3>${escapeHtml(d.name)}</h3>
+          </div>
+          <span class="pricing-pill ${pClass}">${escapeHtml(d.pricing)}</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag category" style="background:${catColor}">${escapeHtml(d.category)}</span>
+          <span class="tag industry">${escapeHtml(d.industry)}</span>
+        </div>
+        <p class="desc">${escapeHtml(d.description)}</p>
+        <p class="feature">${escapeHtml(d.feature)}</p>
+        <div class="card-foot">
+          <span class="platform">${escapeHtml(d.platform)}</span>
+          <a class="visit-link" href="https://${escapeAttr(d.website)}" target="_blank" rel="noopener">Visit ↗</a>
+        </div>`;
+      grid.appendChild(card);
+    });
+  }
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function escapeAttr(str){ return String(str).replace(/"/g,''); }
+
+init();
+</script>
+</body>
+</html>
